@@ -1,12 +1,16 @@
 import argparse
 from torch import optim
 from torch.utils.data import DataLoader
-from datasets.sklarge_RN import TrainDataset
-from engines.trainer_AdaLSN import Trainer, logging
-from Ada_LSN.model import Network
-from Ada_LSN.utils import *
+import sys
+sys.path.append('./datasets/')
+sys.path.append('./engines/')
+sys.path.append('./Ada_LSN/')
+from sklarge_RN import TrainDataset
+from trainer_AdaLSN import Trainer, logging
+from model import Network
+from utils import *
 import os
-from Ada_LSN.genotypes import geno_inception as geno
+from genotypes import geno_inception as geno
 
 parser = argparse.ArgumentParser(description='TRAIN SKLARGE')
 parser.add_argument('--data1', default='./SKLARGE/', type=str)

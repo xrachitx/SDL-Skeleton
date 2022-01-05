@@ -5,7 +5,7 @@ import torch
 from torch import optim
 from torch.utils.data import DataLoader
 from datasets.sklarge import TrainDataset
-# from datasets.sklarge_flux import DataLayer as TrainDataset  # for deep_flux
+from datasets.sklarge_flux import DataLayer as TrainDataset  # for deep_flux
 from engines.trainer import Trainer
 
 

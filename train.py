@@ -6,9 +6,10 @@ from torch import optim
 from torch.utils.data import DataLoader
 import os
 print(os.getcwd())
+import sys
+sys.path.append('./datasets/')
+sys.path.append('./engines/')
 # from datasets.sklarge import TrainDataset
-from datasets import sklarge_flux
-from sklarge_flux import DataLayer as TrainDataset
 # from datasets.sklarge_flux import DataLayer as TrainDataset  # for deep_flux
 from engines.trainer import Trainer
 

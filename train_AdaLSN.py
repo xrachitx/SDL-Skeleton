@@ -51,7 +51,7 @@ def train_model(g, dataloader, args):
     except Exception as e:
         pass
     net = Network(args.C, args.numu_layers, args.u_layers, geno,
-                  pretrained_model='./pretrained_model/inceptionV3.pth').cuda(args.gpu_id)
+                  pretrained_model=None).cuda(args.gpu_id)
     logging.info('params:%.3fM' % count_parameters_in_MB(net))
     lr = args.lr / args.iter_size
     optimizer = optim.Adam(net.parameter(args.lr), lr=lr, betas=(0.9, 0.999), weight_decay=args.weight_decay)

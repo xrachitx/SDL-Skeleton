@@ -5,6 +5,7 @@ import sys
 from utils import *
 from torch.autograd import Variable
 import torch
+from tqdm import tqdm
 
 save = 'eval-{}'.format(time.strftime("%Y%m%d-%H%M%S"))
 create_exp_dir(save)
@@ -38,7 +39,7 @@ class Trainer(object):
         for _ in range(self.args.resume_iter // self.args.lr_step):
             self.adjustLR()
         self.optimizer.zero_grad()
-        for step in range(self.args.resume_iter, self.args.max_step):
+        for step in tqdm(range(self.args.resume_iter, self.args.max_step)):
             
             for _ in range(self.args.iter_size):
                 try:

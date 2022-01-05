@@ -20,7 +20,7 @@ def parse_args():
     parser.add_argument('--root', default='./SKLARGE', type=str)
     parser.add_argument('--files', default='./SKLARGE/aug_data/train_pair.lst', type=str)
     parser.add_argument('--network', default='hed', type=str)
-    parser.add_argument('--pretrained_model', default='pretrained_model/vgg16_caffe.pth', type=str)
+    parser.add_argument('--pretrained_model', default=None, type=str)
     parser.add_argument('--gpu_id', default=0, type=int)
     parser.add_argument('--lr', default=1e-6, type=float)
     parser.add_argument('--lr_step', default=20000, type=int)

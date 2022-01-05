@@ -10,8 +10,8 @@ import sys
 sys.path.append('./datasets/')
 sys.path.append('./engines/')
 # from datasets.sklarge import TrainDataset
-# from datasets.sklarge_flux import DataLayer as TrainDataset  # for deep_flux
-from engines.trainer import Trainer
+from sklarge_flux import DataLayer as TrainDataset  # for deep_flux
+from trainer import Trainer
 
 
 def count_parameters_in_MB(model):

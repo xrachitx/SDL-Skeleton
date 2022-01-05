@@ -11,7 +11,7 @@ class TrainDataset(Dataset):
     def __init__(self, fileNames, rootDir, transform=None):
         self.rootDir = rootDir
         self.transform = transform
-        self.frame = pd.read_csv(fileNames, dtype=str, delimiter=' ', header=None)
+        self.frame = pd.read_csv(fileNames, dtype=str, delimiter=',', header=None)
 
     def __len__(self):
         return len(self.frame)
@@ -19,7 +19,7 @@ class TrainDataset(Dataset):
     def __getitem__(self, idx):
         inputName = os.path.join(self.rootDir, self.frame.iloc[idx, 0])
         targetName = os.path.join(self.rootDir, self.frame.iloc[idx, 1])
-        print(inputName, targetName)
+#         print(inputName, targetName)
 
         inputImage = io.imread(inputName)
         if len(inputImage.shape) == 2:

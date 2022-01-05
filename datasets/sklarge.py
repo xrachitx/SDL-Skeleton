@@ -40,8 +40,8 @@ class TrainDataset(Dataset):
         targetImage = targetImage.astype(np.float32)
         targetImage = np.expand_dims(targetImage, axis=0)
 
-        inputImage = torch.Tensor(inputImage)
-        targetImage = torch.Tensor(targetImage)
+        inputImage = torch.Tensor(inputImage).cuda()
+        targetImage = torch.Tensor(targetImage).cuda()
         return inputImage, targetImage
 
 

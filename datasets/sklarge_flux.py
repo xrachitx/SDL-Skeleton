@@ -2,6 +2,7 @@ import numpy as np
 import cv2
 import random
 import pandas as pd
+from torchvision import transforms
 import skimage.io as io
 import torch
 import os
@@ -107,7 +108,7 @@ def _collate_fn(batch):
         tensor = torch.nn.functional.pad(tensor,(p_left,p_right,p_up,p_down),value=0)
         target = torch.nn.functional.pad(target,(p_left,p_right,p_up,p_down),value=0)
         target = torch.squeeze(target,axis=0)
-        tensor = tensor.transpose((2, 0, 1)).cpu().detach().numpy()
+        tensor = tensor.transpose(0,2).cpu().detach().numpy()
         target = target.cpu().detach().numpy()
         i,f,d = loadsklarge(self, tensor,target)
         print(f"I F D: {i.shape}, {f.shape},{d.shape}")

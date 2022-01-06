@@ -112,13 +112,16 @@ def _collate_fn(batch):
         tensor = tensor.transpose(0,2).cpu().detach().numpy()
         target = target.cpu().detach().numpy()
         i,f,d = loadsklarge(tensor,target)
-        print(f"I F D: {i.shape}, {f.shape},{d.shape}")
-# #         imgs[x,:,:,:] = tensor
-# #         gts[x,:,:] = target
+#         print(f"I F D: {i.shape}, {f.shape},{d.shape}")
+        imgs[x,:,:,:] = i
+        fluxes[x,:,:,:] = f
+        dilmasks[x,:,:,:] = d
+        
+        
         
     
 # #     targets = torch.IntTensor(targets)
-#     return imgs, gts
+    return imgs, fluxes,dilmasks
 
 class DataLayer(Dataset):
 

@@ -73,7 +73,7 @@ def _collate_fn(batch):
         frame = sample[1]
         idx = sample[2]
         inputName = os.path.join(rootDir, frame.iloc[idx, 0])
-        targetName = os.path.join(rootDir, frame.iloc[ifx, 1])
+        targetName = os.path.join(rootDir, frame.iloc[idx, 1])
         tensor = cv2.imread(inputName, 1)
         target = cv2.imread(targetName, 0)        
         tensor = torch.Tensor(tensor)

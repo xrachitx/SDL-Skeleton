@@ -6,7 +6,7 @@ from torch.autograd import Variable
 class WeightedEuclideanLossLayer(torch.autograd.Function):
 
     @staticmethod
-    def forward(ctx, crop, flux, dilmask):
+    def forward(ctx, crop, flux, dilmask,bsize):
         print("INPUTS: ",crop.shape,flux.shape,dilmask.shape)
         weightPos = np.zeros_like(crop.cpu().data, dtype=np.float32)
         weightNeg = np.zeros_like(crop.cpu().data, dtype=np.float32)
@@ -17,14 +17,15 @@ class WeightedEuclideanLossLayer(torch.autograd.Function):
         # the amount of positive and negative pixels
         regionPos = (dilmask.data > 0)
         regionNeg = (dilmask.data == 0)
-        sumPos = regionPos.sum().cpu()
-        sumNeg = regionNeg.sum().cpu()
-        print("REGIONS: ", regionPos.shape,regionNeg.shape, "SUMS: ", sumPos.shape,sumNeg.shape)
-        # balanced weight for positive and negative pixels
-        weightPos[0][0] = sumNeg.float() / float(sumPos + sumNeg) * regionPos.cpu().float()
-        weightPos[0][1] = sumNeg.float() / float(sumPos + sumNeg) * regionPos.cpu().float()
-        weightNeg[0][0] = sumPos.float() / float(sumPos + sumNeg) * regionNeg.cpu().float()
-        weightNeg[0][1] = sumPos.float() / float(sumPos + sumNeg) * regionNeg.cpu().float()
+        for b in range(bsize):
+            sumPos = regionPos[b].sum().cpu()
+            sumNeg = regionNeg[b].sum().cpu()
+            print("REGIONS: ", regionPos.shape,regionNeg.shape, "SUMS: ", sumPos.shape,sumNeg.shape)
+            # balanced weight for positive and negative pixels
+            weightPos[b][0][0] = sumNeg.float() / float(sumPos + sumNeg) * regionPos.cpu().float()
+            weightPos[b][0][1] = sumNeg.float() / float(sumPos + sumNeg) * regionPos.cpu().float()
+            weightNeg[b][0][0] = sumPos.float() / float(sumPos + sumNeg) * regionNeg.cpu().float()
+            weightNeg[b][0][1] = sumPos.float() / float(sumPos + sumNeg) * regionNeg.cpu().float()
         # total loss
         loss = (distL2 * torch.from_numpy(weightPos + weightNeg).cuda()).sum() / len(crop) / 2. / (
                     weightPos + weightNeg).sum()

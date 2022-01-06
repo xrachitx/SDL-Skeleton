@@ -2,7 +2,7 @@ import os
 import numpy as np
 import pandas as pd
 import skimage.io as io
-from torchvision import transformsfrom 
+from torchvision import transforms
 from torch.utils.data import DataLoader
 from torch.utils.data import Dataset
 import torch
@@ -51,14 +51,14 @@ class TrainDataset(Dataset):
 def _collate_fn(batch):
     
     minibatch_size = len(batch)
-    size_x,size_y = 256
+    size_x,size_y = 256,256
     imgs = torch.zeros(minibatch_size, 3, size_x, size_y)
     gts = torch.zeros(minibatch_size, size_x, size_y)
     for x in range(minibatch_size):
         sample = batch[x]
         tensor = sample[0]
         target = sample[1]
-        w_a,h_a = tensor.size
+        w_a,h_a = tensor.shape[1], tensor.shape[2]
         maxx = max(w_a,h_a)
         cap = 256
         extra = 0
@@ -71,30 +71,23 @@ def _collate_fn(batch):
             img_transform = transforms.Compose([transforms.ToPILImage(mode="RGB"),transforms.Resize((new_h, new_w)), transforms.ToTensor()])
             gt_transform = transforms.Compose([transforms.ToPILImage(mode="L"),transforms.Resize((new_h, new_w)), transforms.ToTensor()])
             tensor = img_transform(tensor)
-            target = img_transform(target)
-        if i <2:
-            p_up = 0
-            p_down = ((cap+extra)-new_h)
-        else:
-            p_down = 0
-            p_up = ((cap+extra)-new_h)
+            target = gt_transform(target)
 
-        if i == 0 or i ==2:
-            p_left = 0
-            p_right = ((cap+extra)-new_w)
-        else:
-            p_right = 0
-            p_left = ((cap+extra)-new_w)
+        p_up = (cap+extra-new_h)//2
+        p_down = cap+extra-p_up-new_h
+
+        p_left = (cap+extra-new_w)//2
+        p_right = cap+extra-p_left-new_w
             
         tensor = torch.nn.functional.pad(tensor,(p_left,p_right,p_up,p_down),value=0)
         target = torch.nn.functional.pad(target,(p_left,p_right,p_up,p_down),value=0)
         target = torch.squeeze(target,axis=0)
         imgs[x,:,:,:] = tensor
-        target[x,:,:] = target
+        gts[x,:,:] = target
         
     
 #     targets = torch.IntTensor(targets)
-    return imgs, target
+    return imgs, gts
 
 
 class ImageDataLoader(DataLoader):

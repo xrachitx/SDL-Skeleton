@@ -7,11 +7,12 @@ from tqdm import tqdm
 
 class Trainer(object):
     # init function for class
-    def __init__(self, network, optimizer, dataloader, args):
+    def __init__(self, network, optimizer, dataloader, args,batch_size):
         self.args = args
         self.network = network
         self.optimizer = optimizer
         self.dataloader = dataloader
+        self.batch_size = batch_size
 
         if not os.path.exists('weights'):
             os.makedirs('weights')
@@ -37,7 +38,7 @@ class Trainer(object):
                 data, target,dil = data.cuda(self.args.gpu_id), target.cuda(self.args.gpu_id),dil.cuda(self.args.gpu_id)
                 data, target,dil = Variable(data), Variable(target),Variable(dil)
 
-                loss = self.network(data, target,dil)
+                loss = self.network(data, target,dil,self.batch_size)
                 if np.isnan(float(loss.item())):
                     raise ValueError('loss is nan while training')
                 losses.append(loss)

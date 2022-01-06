@@ -8,16 +8,17 @@ import torch
 import os
 from torch.utils.data import Dataset, DataLoader
 
-def loadsklarge(self, image,skeleton):
+def loadsklarge(image,skeleton):
     # load image and skeleton
 #     inputName = os.path.join(rootDir, frame.iloc[imgidx, 0])
 #     targetName = os.path.join(rootDir, frame.iloc[gtidx, 1])
 #     image = cv2.imread(inputName, 1)
 #     skeleton = cv2.imread(targetName, 0)
 #     print("IMAGE: ", image.shape, "skeleton: ", skeleton.shape)
-#     skeleton = (skeleton > 0).astype(np.uint8)
+    skeleton = (skeleton > 0).astype(np.uint8)
+    mean = np.array([103.939, 116.779, 123.68])
     image = image.astype(np.float32)
-    image -= self.mean
+    image -= mean
     image = image.transpose((2, 0, 1))
 
     # compute flux and dilmask
@@ -110,7 +111,7 @@ def _collate_fn(batch):
         target = torch.squeeze(target,axis=0)
         tensor = tensor.transpose(0,2).cpu().detach().numpy()
         target = target.cpu().detach().numpy()
-        i,f,d = loadsklarge(self, tensor,target)
+        i,f,d = loadsklarge(tensor,target)
         print(f"I F D: {i.shape}, {f.shape},{d.shape}")
 # #         imgs[x,:,:,:] = tensor
 # #         gts[x,:,:] = target

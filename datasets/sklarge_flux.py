@@ -10,29 +10,33 @@ from torch.utils.data import Dataset, DataLoader
 
 class DataLayer(Dataset):
 
-    def __init__(self, data_dir):
+    def __init__(self, fileNames,rootDir):
         # data layer config
-        self.data_dir = data_dir
+        self.rootDir = rootDir
+        self.transform = transform
+        self.frame = pd.read_csv(fileNames, dtype=str, delimiter=',', header=None)
         self.mean = np.array([103.939, 116.779, 123.68])
 
         # read filename list for each dataset here
-        self.fnLst = open(self.data_dir + 'SKLARGE/train_pair_255_s_all.lst').readlines()
+#         self.fnLst = open(self.data_dir + 'SKLARGE/train_pair_255_s_all.lst').readlines()
         # randomization: seed and pick
 
     def __len__(self):
-        return len(self.fnLst)
+        return len(self.frame.shape[0])
 
     def __getitem__(self, idx):
         # load image, flux and dilmask
 
-        self.image, self.flux, self.dilmask = self.loadsklarge(self.fnLst[idx].split()[0],
-                                                               self.fnLst[idx].split()[1])
+        self.image, self.flux, self.dilmask = self.loadsklarge(idx,
+                                                               idx)
         return self.image, self.flux, self.dilmask
 
     def loadsklarge(self, imgidx, gtidx):
         # load image and skeleton
-        image = cv2.imread('{}/SKLARGE/{}'.format(self.data_dir, imgidx), 1)
-        skeleton = cv2.imread('{}/SKLARGE/{}'.format(self.data_dir, gtidx), 0)
+        inputName = os.path.join(self.rootDir, self.frame.iloc[idx, 0])
+        targetName = os.path.join(self.rootDir, self.frame.iloc[idx, 1])
+        image = cv2.imread(inputName, 1)
+        skeleton = cv2.imread(targetName, 0)
         skeleton = (skeleton > 0).astype(np.uint8)
         image = image.astype(np.float32)
         image -= self.mean

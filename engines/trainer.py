@@ -41,7 +41,7 @@ class Trainer(object):
                 if np.isnan(float(loss.item())):
                     raise ValueError('loss is nan while training')
                 losses.append(loss)
-                lossAcc += loss.data[0]
+                lossAcc += loss.item()
 
             bLoss = torch.mean(torch.cat(losses))
             self.optimizer.zero_grad()

@@ -12,6 +12,7 @@ class Network(nn.Module):
     def __init__(self, pretrained_model=None):
         # define VGG architecture and layers
         super(Network, self).__init__()
+        self.batch_size = batch_size
 
         self.VGG16fs = VGGfs(cfg['D'])
         self.dsn3 = nn.Conv2d(256, 256, 1)
@@ -92,7 +93,7 @@ class Network(nn.Module):
         # fup = self.upscore4(f3)
         fcrop = self.crop_2(fup, (34, 34) + size)
         if self.training:
-            loss = wel(fcrop, input[1], input[2])
+            loss = wel(fcrop, input[1], input[2],self.batch_size)
             # loss = bce2d(fcrop, input[1])
             return loss
         else:

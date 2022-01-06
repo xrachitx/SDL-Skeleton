@@ -9,8 +9,8 @@ print(os.getcwd())
 import sys
 sys.path.append('./datasets/')
 sys.path.append('./engines/')
-from sklarge import TrainDataset
-# from sklarge_flux import DataLayer as TrainDataset  # for deep_flux
+# from sklarge import TrainDataset
+from sklarge_flux import DataLayer as TrainDataset  # for deep_flux
 from trainer import Trainer
 
 

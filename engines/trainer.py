@@ -3,7 +3,7 @@ import math, os, time
 import numpy as np
 from torch.autograd import Variable
 import torch
-
+from tqdm import tqdm
 
 class Trainer(object):
     # init function for class
@@ -25,7 +25,7 @@ class Trainer(object):
         for _ in range(self.args.resume_iter // self.args.lr_step):
             self.adjustLR()
         self.showLR()
-        for step in range(self.args.resume_iter, self.args.max_step):
+        for step in tqdm(range(self.args.resume_iter, self.args.max_step)):
             losses = []
             for _ in range(self.args.iter_size):
                 try:

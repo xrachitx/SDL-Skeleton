@@ -22,10 +22,10 @@ class WeightedEuclideanLossLayer(torch.autograd.Function):
             sumNeg = regionNeg[b].sum().cpu()
             print("REGIONS: ", regionPos.shape,regionNeg.shape, "SUMS: ", sumPos.item(),sumNeg.item())
             # balanced weight for positive and negative pixels
-            weightPos[b][0][0] = sumNeg.float() / float(sumPos + sumNeg) * regionPos[b].cpu().float()
-            weightPos[b][0][1] = sumNeg.float() / float(sumPos + sumNeg) * regionPos[b].cpu().float()
-            weightNeg[b][0][0] = sumPos.float() / float(sumPos + sumNeg) * regionNeg[b].cpu().float()
-            weightNeg[b][0][1] = sumPos.float() / float(sumPos + sumNeg) * regionNeg[b].cpu().float()
+            weightPos[b][0] = sumNeg.float() / float(sumPos + sumNeg) * regionPos[b].cpu().float()
+            weightPos[b][1] = sumNeg.float() / float(sumPos + sumNeg) * regionPos[b].cpu().float()
+            weightNeg[b][0] = sumPos.float() / float(sumPos + sumNeg) * regionNeg[b].cpu().float()
+            weightNeg[b][1] = sumPos.float() / float(sumPos + sumNeg) * regionNeg[b].cpu().float()
         # total loss
         loss = (distL2 * torch.from_numpy(weightPos + weightNeg).cuda()).sum() / len(crop) / 2. / (
                     weightPos + weightNeg).sum()

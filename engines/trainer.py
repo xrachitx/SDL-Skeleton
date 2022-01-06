@@ -29,15 +29,15 @@ class Trainer(object):
             losses = []
             for _ in range(self.args.iter_size):
                 try:
-                    data, target,_ = next(dataiter)
+                    data, target,dil = next(dataiter)
                 except StopIteration:
                     dataiter = iter(self.dataloader)
-                    data, target,_ = next(dataiter)
+                    data, target,dil = next(dataiter)
 
-                data, target = data.cuda(self.args.gpu_id), target.cuda(self.args.gpu_id)
-                data, target = Variable(data), Variable(target)
+                data, target,dil = data.cuda(self.args.gpu_id), target.cuda(self.args.gpu_id),dil.cuda(self.args.gpu_id)
+                data, target,dil = Variable(data), Variable(target),Variable(dil)
 
-                loss = self.network(data, target)
+                loss = self.network(data, target,dil)
                 if np.isnan(float(loss.data[0])):
                     raise ValueError('loss is nan while training')
                 losses.append(loss)

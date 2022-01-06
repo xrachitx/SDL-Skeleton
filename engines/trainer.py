@@ -29,10 +29,10 @@ class Trainer(object):
             losses = []
             for _ in range(self.args.iter_size):
                 try:
-                    data, target = next(dataiter)
+                    data, target,_ = next(dataiter)
                 except StopIteration:
                     dataiter = iter(self.dataloader)
-                    data, target = next(dataiter)
+                    data, target,_ = next(dataiter)
 
                 data, target = data.cuda(self.args.gpu_id), target.cuda(self.args.gpu_id)
                 data, target = Variable(data), Variable(target)

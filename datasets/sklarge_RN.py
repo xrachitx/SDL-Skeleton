@@ -2,6 +2,7 @@ import os
 import numpy as np
 import pandas as pd
 import skimage.io as io
+from torchvision import transforms
 from torch.utils.data import Dataset
 import torch
 import cv2

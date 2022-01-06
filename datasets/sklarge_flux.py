@@ -7,14 +7,14 @@ import torch
 import os
 from torch.utils.data import Dataset, DataLoader
 
-def loadsklarge(self, rootDir, frame, imgidx, gtidx):
+def loadsklarge(self, image,skeleton):
     # load image and skeleton
-    inputName = os.path.join(rootDir, frame.iloc[imgidx, 0])
-    targetName = os.path.join(rootDir, frame.iloc[gtidx, 1])
-    image = cv2.imread(inputName, 1)
-    skeleton = cv2.imread(targetName, 0)
-    print("IMAGE: ", image.shape, "skeleton: ", skeleton.shape)
-    skeleton = (skeleton > 0).astype(np.uint8)
+#     inputName = os.path.join(rootDir, frame.iloc[imgidx, 0])
+#     targetName = os.path.join(rootDir, frame.iloc[gtidx, 1])
+#     image = cv2.imread(inputName, 1)
+#     skeleton = cv2.imread(targetName, 0)
+#     print("IMAGE: ", image.shape, "skeleton: ", skeleton.shape)
+#     skeleton = (skeleton > 0).astype(np.uint8)
     image = image.astype(np.float32)
     image -= self.mean
     image = image.transpose((2, 0, 1))
@@ -80,33 +80,36 @@ def _collate_fn(batch):
         target = torch.Tensor(target)
         print("tensor shape: ", tensor.shape, "target shape: ", target.shape)
         
-#         tensor = tensor.transpose((2, 0, 1))
+        tensor = tensor.transpose((2, 0, 1))
         
-#         w_a,h_a = tensor.shape[1], tensor.shape[2]
-#         maxx = max(w_a,h_a)
-#         cap = 256
-#         extra = 0
+        w_a,h_a = tensor.shape[1], tensor.shape[2]
+        maxx = max(w_a,h_a)
+        cap = 256
+        extra = 0
 
-#         if maxx<= cap:
-#             new_w, new_h = w_a,h_a
-#         else:
-#             r = cap/maxx
-#             new_w, new_h = int(w_a*r), int(h_a*r)
-#             img_transform = transforms.Compose([transforms.ToPILImage(mode="RGB"),transforms.Resize((new_h, new_w)), transforms.ToTensor()])
-#             gt_transform = transforms.Compose([transforms.ToPILImage(mode="L"),transforms.Resize((new_h, new_w)), transforms.ToTensor()])
-#             tensor = img_transform(tensor)
-#             target = gt_transform(target)
+        if maxx<= cap:
+            new_w, new_h = w_a,h_a
+        else:
+            r = cap/maxx
+            new_w, new_h = int(w_a*r), int(h_a*r)
+            img_transform = transforms.Compose([transforms.ToPILImage(mode="RGB"),transforms.Resize((new_h, new_w)), transforms.ToTensor()])
+            gt_transform = transforms.Compose([transforms.ToPILImage(mode="L"),transforms.Resize((new_h, new_w)), transforms.ToTensor()])
+            tensor = img_transform(tensor)
+            target = gt_transform(target)
 
-#         p_up = (cap+extra-new_h)//2
-#         p_down = cap+extra-p_up-new_h
+        p_up = (cap+extra-new_h)//2
+        p_down = cap+extra-p_up-new_h
 
-#         p_left = (cap+extra-new_w)//2
-#         p_right = cap+extra-p_left-new_w
+        p_left = (cap+extra-new_w)//2
+        p_right = cap+extra-p_left-new_w
             
-#         tensor = torch.nn.functional.pad(tensor,(p_left,p_right,p_up,p_down),value=0)
-#         target = torch.nn.functional.pad(target,(p_left,p_right,p_up,p_down),value=0)
-#         target = torch.squeeze(target,axis=0)
-        
+        tensor = torch.nn.functional.pad(tensor,(p_left,p_right,p_up,p_down),value=0)
+        target = torch.nn.functional.pad(target,(p_left,p_right,p_up,p_down),value=0)
+        target = torch.squeeze(target,axis=0)
+        tensor = tensor.transpose((2, 0, 1)).cpu().detach().numpy()
+        target = target.cpu().detach().numpy()
+        i,f,d = loadsklarge(self, tensor,target)
+        print(f"I F D: {i.shape}, {f.shape},{d.shape}")
 # #         imgs[x,:,:,:] = tensor
 # #         gts[x,:,:] = target
         

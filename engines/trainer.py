@@ -38,7 +38,7 @@ class Trainer(object):
                 data, target,dil = Variable(data), Variable(target),Variable(dil)
 
                 loss = self.network(data, target,dil)
-                if np.isnan(float(loss.data[0])):
+                if np.isnan(float(loss.item())):
                     raise ValueError('loss is nan while training')
                 losses.append(loss)
                 lossAcc += loss.data[0]

@@ -22,7 +22,7 @@ class DataLayer(Dataset):
         # randomization: seed and pick
 
     def __len__(self):
-        return len(self.frame.shape[0])
+        return self.frame.shape[0]
 
     def __getitem__(self, idx):
         # load image, flux and dilmask

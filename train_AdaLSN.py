@@ -5,7 +5,7 @@ import sys
 sys.path.append('./datasets/')
 sys.path.append('./engines/')
 sys.path.append('./Ada_LSN/')
-from sklarge_RN import TrainDataset
+from sklarge_RN import TrainDataset, ImageDataLoader
 from trainer_AdaLSN import Trainer, logging
 from model import Network
 from utils import *

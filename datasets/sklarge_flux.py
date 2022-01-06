@@ -78,7 +78,7 @@ def _collate_fn(batch):
         target = cv2.imread(targetName, 0)        
         tensor = torch.Tensor(tensor)
         target = torch.Tensor(target)
-        print("tensor shape: ", tensor, "target shape: ", target.shape)
+        print("tensor shape: ", tensor.shape, "target shape: ", target.shape)
         
 #         tensor = tensor.transpose((2, 0, 1))
         

@@ -113,6 +113,9 @@ def _collate_fn(batch):
         target = target.cpu().detach().numpy()
         i,f,d = loadsklarge(tensor,target)
 #         print(f"I F D: {i.shape}, {f.shape},{d.shape}")
+        i = torch.Tensor(i).cuda()
+        f = torch.Tensor(f).cuda()
+        d = torch.Tensor(d).cuda()
         imgs[x,:,:,:] = i
         fluxes[x,:,:,:] = f
         dilmasks[x,:,:,:] = d

@@ -12,7 +12,7 @@ class Network(nn.Module):
     def __init__(self, pretrained_model=None):
         # define VGG architecture and layers
         super(Network, self).__init__()
-        self.batch_size = batch_size
+        
 
         self.VGG16fs = VGGfs(cfg['D'])
         self.dsn3 = nn.Conv2d(256, 256, 1)
@@ -53,6 +53,7 @@ class Network(nn.Module):
     def forward(self, *input):
 #         print("LENGTH OF INPUT: ", len(input))
         size = input[0].size()[2:4]
+        batch_size = input[3]
         conv1, conv2, conv3, conv4, conv5 = self.VGG16fs(input[0])
 
         dsn3_conv = self.dsn3(conv3)

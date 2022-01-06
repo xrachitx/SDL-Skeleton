@@ -58,7 +58,7 @@ def loadsklarge(image,skeleton):
 
     dilmask = (dilmask > 0).astype(np.float32)
     dilmask = dilmask[np.newaxis, ...]
-    print(image.shape,flux.shape,dilmask.shape)
+#     print(image.shape,flux.shape,dilmask.shape)
     return image, flux, dilmask
 
 

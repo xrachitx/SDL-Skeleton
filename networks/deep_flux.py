@@ -50,7 +50,7 @@ class Network(nn.Module):
             self.VGG16fs.load_state_dict({k: v for k, v in state_dict.items() if k in self.VGG16fs.state_dict()})
 
     def forward(self, *input):
-        print(len(input))
+        print("LENGTH OF INPUT: ", len(input))
         size = input[0].size()[2:4]
         conv1, conv2, conv3, conv4, conv5 = self.VGG16fs(input[0])
 

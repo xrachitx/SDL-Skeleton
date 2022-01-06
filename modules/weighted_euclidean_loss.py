@@ -7,8 +7,10 @@ class WeightedEuclideanLossLayer(torch.autograd.Function):
 
     @staticmethod
     def forward(ctx, crop, flux, dilmask):
+        print("INPUTS: ",crop.shape,flux.shape,dilmask.shape)
         weightPos = np.zeros_like(crop.cpu().data, dtype=np.float32)
         weightNeg = np.zeros_like(crop.cpu().data, dtype=np.float32)
+        print("weights: ",weightPos.shape,weightNeg.shape)
 
         distL1 = crop.data - flux.data
         distL2 = distL1 ** 2

@@ -6,6 +6,7 @@ from utils import *
 from torch.autograd import Variable
 import torch
 from tqdm import tqdm
+import os
 
 save = 'eval-{}'.format(time.strftime("%Y%m%d-%H%M%S"))
 create_exp_dir(save)
@@ -76,7 +77,9 @@ class Trainer(object):
                 if step < self.args.max_step - 1:
                     lossAcc = 0.0
                     lossFuse = 0.0
-
+            if not os.path.exists("./Ada_LSN/weights/inception_sklarge/"):
+                os.makedirs("./Ada_LSN/weights/inception_sklarge/")
+                    
             if (step + 1) % self.args.save_interval == 0:
                 torch.save(self.network.state_dict(),
                            './Ada_LSN/weights/inception_sklarge/skel_{}.pth'.format(step + 1))

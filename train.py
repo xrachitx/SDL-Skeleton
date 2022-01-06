@@ -46,7 +46,8 @@ if __name__ == '__main__':
     torch.set_default_tensor_type('torch.cuda.FloatTensor')
     torch.cuda.set_device(args.gpu_id)
     dataset = TrainDataset(args.files, args.root)
-    dataloader = ImageDataLoader(dataset, shuffle=False,batch_size=20)  # batchsize=1
+    batch_size = 20
+    dataloader = ImageDataLoader(dataset, shuffle=False,batch_size=batch_size)  # batchsize=1
 
     Network = getattr(importlib.import_module('networks.' + args.network), 'Network')
 
@@ -62,5 +63,5 @@ if __name__ == '__main__':
     optimizer = optim.SGD(net.parameters(args.lr), lr=lr, momentum=args.momentum, weight_decay=args.weight_decay)
     # optimizer = optim.Adam(net.parameters(args.lr), lr=lr, betas=(0.9, 0.999), weight_decay=args.weight_decay)
     #  for deep_flux
-    trainer = Trainer(net, optimizer, dataloader, args)
+    trainer = Trainer(net, optimizer, dataloader, args,batch_size)
     trainer.train()

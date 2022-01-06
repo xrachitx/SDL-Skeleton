@@ -75,12 +75,13 @@ def _collate_fn(batch):
         inputName = os.path.join(rootDir, frame.iloc[idx, 0])
         targetName = os.path.join(rootDir, frame.iloc[idx, 1])
         tensor = cv2.imread(inputName, 1)
-        target = cv2.imread(targetName, 0)        
+        target = cv2.imread(targetName, 0)
+        tensor = tensor.transpose((2, 0, 1))
         tensor = torch.Tensor(tensor)
         target = torch.Tensor(target)
         print("tensor shape: ", tensor.shape, "target shape: ", target.shape)
         
-        tensor = tensor.transpose((2, 0, 1))
+        
         
         w_a,h_a = tensor.shape[1], tensor.shape[2]
         maxx = max(w_a,h_a)

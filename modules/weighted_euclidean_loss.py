@@ -20,7 +20,7 @@ class WeightedEuclideanLossLayer(torch.autograd.Function):
         for b in range(bsize):
             sumPos = regionPos[b].sum().cpu()
             sumNeg = regionNeg[b].sum().cpu()
-            print("REGIONS: ", regionPos.shape,regionNeg.shape, "SUMS: ", sumPos.shape,sumNeg.shape)
+            print("REGIONS: ", regionPos.shape,regionNeg.shape, "SUMS: ", sumPos.item(),sumNeg.item())
             # balanced weight for positive and negative pixels
             weightPos[b][0][0] = sumNeg.float() / float(sumPos + sumNeg) * regionPos[b].cpu().float()
             weightPos[b][0][1] = sumNeg.float() / float(sumPos + sumNeg) * regionPos[b].cpu().float()

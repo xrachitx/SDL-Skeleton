@@ -81,7 +81,7 @@ def _collate_fn(batch):
         tensor = tensor.transpose((2, 0, 1))
         tensor = torch.Tensor(tensor)
         target = torch.Tensor(target)
-        print("tensor shape: ", tensor.shape, "target shape: ", target.shape)
+#         print("tensor shape: ", tensor.shape, "target shape: ", target.shape)
         
         
         

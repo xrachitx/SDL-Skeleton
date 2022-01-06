@@ -33,8 +33,8 @@ class DataLayer(Dataset):
 
     def loadsklarge(self, imgidx, gtidx):
         # load image and skeleton
-        inputName = os.path.join(self.rootDir, self.frame.iloc[idx, 0])
-        targetName = os.path.join(self.rootDir, self.frame.iloc[idx, 1])
+        inputName = os.path.join(self.rootDir, self.frame.iloc[imgidx, 0])
+        targetName = os.path.join(self.rootDir, self.frame.iloc[gtidx, 1])
         image = cv2.imread(inputName, 1)
         skeleton = cv2.imread(targetName, 0)
         skeleton = (skeleton > 0).astype(np.uint8)

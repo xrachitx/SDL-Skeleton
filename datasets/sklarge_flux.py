@@ -13,7 +13,7 @@ class DataLayer(Dataset):
     def __init__(self, fileNames,rootDir):
         # data layer config
         self.rootDir = rootDir
-        self.transform = transform
+#         self.transform = transform
         self.frame = pd.read_csv(fileNames, dtype=str, delimiter=',', header=None)
         self.mean = np.array([103.939, 116.779, 123.68])
 

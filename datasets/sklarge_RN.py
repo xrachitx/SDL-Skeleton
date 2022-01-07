@@ -109,7 +109,7 @@ class TestDataset(Dataset):
 
     def __getitem__(self, idx):
         fname = self.frame.iloc[idx, 0]
-        inputName = os.path.join(self.rootDir, fname + '.jpg')
+        inputName = os.path.join(self.rootDir, fname)
 
         inputImage = io.imread(inputName)[:, :, ::-1]
         K = 60000.0  # 180000.0 for sympascal

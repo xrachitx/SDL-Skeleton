@@ -2,10 +2,14 @@ import torch
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
 import cv2
-from datasets.sklarge_RN import TestDataset
+import sys
+sys.path.append('./datasets/')
+sys.path.append('./engines/')
+sys.path.append('./Ada_LSN/')
+from sklarge_RN import TestDataset
 import torch
-from Ada_LSN.model import Network
-from Ada_LSN.genotypes import geno_inception as geno
+from model import Network
+from genotypes import geno_inception as geno
 import os
 import time
 import numpy as np

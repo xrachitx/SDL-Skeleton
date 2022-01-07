@@ -61,7 +61,7 @@ start_time = time.time()
 tep = 1
 for inp, fname, H, W in dataloader:
     inp = Variable(inp.cuda(gpu_id))
-    out = net(inp)
+    out = net(inp,fname)
     fileName = output_dir + fname[0] + '.mat'
     tep += 1
     out_np = out.data[0, 0].cpu().numpy()

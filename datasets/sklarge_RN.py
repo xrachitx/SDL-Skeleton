@@ -101,7 +101,7 @@ class TestDataset(Dataset):
     def __init__(self, fileNames, rootDir, transform=None):
         self.rootDir = rootDir
         self.transform = transform
-        self.frame = pd.read_csv(fileNames, dtype=str, delimiter=' ', header=None)
+        self.frame = pd.read_csv(fileNames, dtype=str, delimiter=',', header=None)
 
     def __len__(self):
         return len(self.frame)

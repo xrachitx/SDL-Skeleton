@@ -48,7 +48,7 @@ def plot_single_scale(scale_lst, size):
 idx = 16
 inp, fname, H, W = dataloader[idx]
 inp = Variable(inp.cuda(gpu_id))
-out = net(inp)
+out = net(inp,fname)
 scale_lst = [out]
 plot_single_scale(scale_lst, 22)
 plt.show()

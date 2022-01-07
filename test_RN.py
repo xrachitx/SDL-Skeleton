@@ -27,7 +27,7 @@ net.load_state_dict(torch.load('../../input/skel-model/skel_5000.pth', map_locat
 root = '../../input/coskel/kag_split/'
 files = '../../input/coskel/kag_split/test.csv'
 
-dataset = TestDataset(root, files)
+dataset = TestDataset(files,root)
 dataloader = list(DataLoader(dataset, batch_size=1,shuffle=False))
 
 

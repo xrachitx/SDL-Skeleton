@@ -18,13 +18,13 @@ gpu_id = 0
 torch.set_default_tensor_type('torch.cuda.FloatTensor')
 torch.cuda.set_device(gpu_id)
 net = Network(128, 4, [0, 1, 2, 3], geno).cuda(0).eval()
-net.load_state_dict(torch.load('./Ada_LSN/weights/inception_sklarge/skel_74000.pth', map_location=lambda storage, loc: storage))
+net.load_state_dict(torch.load('../../input/skel_model/skel_5000.pth', map_location=lambda storage, loc: storage))
 
-root = './OriginalSKLARGE/images/test'
-files = './OriginalSKLARGE/test.lst'
+root = '../../input/coskel/kag_split/'
+files = '../../input/coskel/kag_split/test.csv'
 
 dataset = TestDataset(root, files)
-dataloader = list(DataLoader(dataset, batch_size=1))
+dataloader = list(DataLoader(dataset, batch_size=1,shuffle=False))
 
 
 def plot_single_scale(scale_lst, size):

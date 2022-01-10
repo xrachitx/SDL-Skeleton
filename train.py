@@ -9,9 +9,11 @@ print(os.getcwd())
 import sys
 sys.path.append('./datasets/')
 sys.path.append('./engines/')
-# from sklarge import TrainDataset
+from sklarge import TrainDataset
+from sklarge import ImageDataLoader
+
 from sklarge_flux import DataLayer,ImageDataLoader
-from sklarge_flux import DataLayer as TrainDataset  # for deep_flux
+# from sklarge_flux import DataLayer as TrainDataset  # for deep_flux
 from trainer import Trainer
 
 
@@ -63,5 +65,5 @@ if __name__ == '__main__':
     optimizer = optim.SGD(net.parameters(args.lr), lr=lr, momentum=args.momentum, weight_decay=args.weight_decay)
     # optimizer = optim.Adam(net.parameters(args.lr), lr=lr, betas=(0.9, 0.999), weight_decay=args.weight_decay)
     #  for deep_flux
-    trainer = Trainer(net, optimizer, dataloader, args,batch_size)
+    trainer = Trainer(net, optimizer, dataloader, args)
     trainer.train()

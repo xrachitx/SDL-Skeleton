@@ -48,8 +48,8 @@ if __name__ == '__main__':
     torch.set_default_tensor_type('torch.cuda.FloatTensor')
     torch.cuda.set_device(args.gpu_id)
     dataset = TrainDataset(args.files, args.root)
-    batch_size = 20
-    dataloader = ImageDataLoader(dataset, shuffle=False,batch_size=batch_size)  # batchsize=1
+    batch_size = 1
+    dataloader = DataLoader(dataset, shuffle=False,batch_size=batch_size)  # batchsize=1
 
     Network = getattr(importlib.import_module('networks.' + args.network), 'Network')
 

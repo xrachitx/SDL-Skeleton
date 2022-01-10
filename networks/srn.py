@@ -93,7 +93,7 @@ class Network(nn.Module):
 
     # define the computation graph
     def forward(self, *input):
-        print("here")
+#         print("here")
         x = input[0]
         size = x.size()[2:4]
         # get output from VGG model

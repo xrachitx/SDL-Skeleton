@@ -12,7 +12,7 @@ sys.path.append('./engines/')
 from sklarge import TrainDataset
 from sklarge import ImageDataLoader
 
-from sklarge_flux import DataLayer,ImageDataLoader
+# from sklarge_flux import DataLayer,ImageDataLoader
 # from sklarge_flux import DataLayer as TrainDataset  # for deep_flux
 from trainer import Trainer
 

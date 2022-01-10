@@ -2,7 +2,7 @@ import os
 import numpy as np
 import pandas as pd
 import skimage.io as io
-from torch.utils.data import Dataset
+from torch.utils.data import Dataset,DataLoader
 import torch
 
 

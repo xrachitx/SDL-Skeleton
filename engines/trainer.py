@@ -29,16 +29,25 @@ class Trainer(object):
         for step in tqdm(range(self.args.resume_iter, self.args.max_step)):
             losses = []
             for _ in range(self.args.iter_size):
+#                 try:
+#                     data, target,dil = next(dataiter)
+#                 except StopIteration:
+#                     dataiter = iter(self.dataloader)
+#                     data, target,dil = next(dataiter)
                 try:
-                    data, target,dil = next(dataiter)
+                    data, target = next(dataiter)
                 except StopIteration:
                     dataiter = iter(self.dataloader)
-                    data, target,dil = next(dataiter)
+                    data, target= next(dataiter)
+                    
+#                 data, target,dil = data.cuda(self.args.gpu_id), target.cuda(self.args.gpu_id),dil.cuda(self.args.gpu_id)
+#                 data, target,dil = Variable(data), Variable(target),Variable(dil)
+                
+                data, target = data.cuda(self.args.gpu_id), target.cuda(self.args.gpu_id)
+                data, target = Variable(data), Variable(target)
 
-                data, target,dil = data.cuda(self.args.gpu_id), target.cuda(self.args.gpu_id),dil.cuda(self.args.gpu_id)
-                data, target,dil = Variable(data), Variable(target),Variable(dil)
-
-                loss = self.network(data, target,dil,self.batch_size)
+#                 loss = self.network(data, target,dil,self.batch_size)
+                loss = self.network(data, target,self.batch_size)
                 if np.isnan(float(loss.item())):
                     raise ValueError('loss is nan while training')
                 losses.append(loss)

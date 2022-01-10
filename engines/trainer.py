@@ -50,10 +50,13 @@ class Trainer(object):
 
 #                 loss = self.network(data, target,dil,self.batch_size)
                 loss = self.network(data, target)
-                if np.isnan(float(loss.item())):
-                    raise ValueError('loss is nan while training')
-                losses.append(loss)
-                lossAcc += loss.item()
+                try:
+                    if np.isnan(float(loss.item())):
+                        raise ValueError('loss is nan while training')
+                    losses.append(loss)
+                    lossAcc += loss.item()
+                except:
+                    print("avoiding")
 
             bLoss = torch.mean(torch.cat(losses))
             self.optimizer.zero_grad()

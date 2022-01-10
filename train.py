@@ -45,7 +45,7 @@ def parse_args():
 
 if __name__ == '__main__':
     args = parse_args()
-    torch.set_default_tensor_type('torch.cuda.FloatTensor')
+    torch.set_default_tensor_type('torch.FloatTensor')
     torch.cuda.set_device(args.gpu_id)
     dataset = TrainDataset(args.files, args.root)
     batch_size = 1

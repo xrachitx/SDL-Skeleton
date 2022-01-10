@@ -7,12 +7,14 @@ from tqdm import tqdm
 
 class Trainer(object):
     # init function for class
-    def __init__(self, network, optimizer, dataloader, args,batch_size):
+    
+    def __init__(self, network, optimizer, dataloader, args):
+#     def __init__(self, network, optimizer, dataloader, args,batch_size):
         self.args = args
         self.network = network
         self.optimizer = optimizer
         self.dataloader = dataloader
-        self.batch_size = batch_size
+#         self.batch_size = batch_size
 
         if not os.path.exists('weights'):
             os.makedirs('weights')

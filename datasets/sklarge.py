@@ -44,7 +44,54 @@ class TrainDataset(Dataset):
         targetImage = torch.Tensor(targetImage).cuda()
         return inputImage, targetImage
 
+def _collate_fn(batch):
+    
+    minibatch_size = len(batch)
+    size_x,size_y = 256,256
+    imgs = torch.zeros(minibatch_size, 3, size_x, size_y)
+    gts = torch.zeros(minibatch_size, size_x, size_y)
+    for x in range(minibatch_size):
+        sample = batch[x]
+        tensor = sample[0]
+        target = sample[1]
+        w_a,h_a = tensor.shape[1], tensor.shape[2]
+        maxx = max(w_a,h_a)
+        cap = 256
+        extra = 0
 
+        if maxx<= cap:
+            new_w, new_h = w_a,h_a
+        else:
+            r = cap/maxx
+            new_w, new_h = int(w_a*r), int(h_a*r)
+            img_transform = transforms.Compose([transforms.ToPILImage(mode="RGB"),transforms.Resize((new_h, new_w)), transforms.ToTensor()])
+            gt_transform = transforms.Compose([transforms.ToPILImage(mode="L"),transforms.Resize((new_h, new_w)), transforms.ToTensor()])
+            tensor = img_transform(tensor)
+            target = gt_transform(target)
+
+        p_up = (cap+extra-new_h)//2
+        p_down = cap+extra-p_up-new_h
+
+        p_left = (cap+extra-new_w)//2
+        p_right = cap+extra-p_left-new_w
+            
+        tensor = torch.nn.functional.pad(tensor,(p_left,p_right,p_up,p_down),value=0)
+        target = torch.nn.functional.pad(target,(p_left,p_right,p_up,p_down),value=0)
+        target = torch.squeeze(target,axis=0)
+        imgs[x,:,:,:] = tensor
+        gts[x,:,:] = target
+        
+    
+#     targets = torch.IntTensor(targets)
+    return imgs, gts
+
+
+class ImageDataLoader(DataLoader):
+    def __init__(self, *args, **kwargs):
+        super(ImageDataLoader, self).__init__(*args, **kwargs)
+        self.collate_fn = _collate_fn
+    
+    
 class TestDataset(Dataset):
     def __init__(self, fileNames, rootDir, transform=None):
         self.rootDir = rootDir

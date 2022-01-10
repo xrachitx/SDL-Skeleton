@@ -16,8 +16,8 @@ class Trainer(object):
         self.dataloader = dataloader
 #         self.batch_size = batch_size
 
-        if not os.path.exists('weights'):
-            os.makedirs('weights')
+        if not os.path.exists('./weights/hed_sklarge/'):
+            os.makedirs('./weights/hed_sklarge/')
 
         self.timeformat = '%Y-%m-%d %H:%M:%S'
 

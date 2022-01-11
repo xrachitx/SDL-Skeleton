@@ -105,6 +105,7 @@ class TestDataset(Dataset):
     def __getitem__(self, idx):
         fname = self.frame.iloc[idx, 0]
         inputName = os.path.join(self.rootDir, fname)
+        print(inputName)
 
         inputImage = io.imread(inputName)[:, :, ::-1]
         inputImage = inputImage.astype(np.float32)

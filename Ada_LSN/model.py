@@ -202,7 +202,7 @@ class Network(nn.Module):
             d_fuse = self.crop(d_fuse, (0, 0) + p2.size()[2:4]) + p2
         d_fuse = self.fuse_cell(d_fuse)
         
-        if False:
+        if True:
 
             s = self.classifier2(self.classifier1(d_fuse))
             out_fuse = self.crop(s, (34, 34) + size)

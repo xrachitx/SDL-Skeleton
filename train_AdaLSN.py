@@ -64,6 +64,6 @@ if __name__ == '__main__':
     torch.set_default_tensor_type('torch.cuda.FloatTensor')
     torch.cuda.set_device(args.gpu_id)
     dataset = TrainDataset(args.data2, args.data1)
-    dataloader = ImageDataLoader(dataset, shuffle=False,batch_size=20)  # batchsize=1
+    dataloader = DataLoader(dataset, shuffle=False)  # batchsize=1
 
     train_model(geno, dataloader, args)

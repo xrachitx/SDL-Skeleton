@@ -252,7 +252,7 @@ class Network(nn.Module):
                                         h2s1_slice[2], h2s2_slice[3], h2s3_slice[4]), dim=1))
         '''
 
-        if self.training:
+        if input[2]:
             loss1 = bce2d(d1, input[1])
             loss2 = bce2d(d2, input[1])
             loss3 = bce2d(d3, input[1])

@@ -93,7 +93,7 @@ class Network(nn.Module):
         fup = self.up4(f3)
         # fup = self.upscore4(f3)
         fcrop = self.crop_2(fup, (34, 34) + size)
-        if self.training:
+        if input[-1]:
             loss = wel(fcrop, input[1], input[2],batch_size)
             # loss = bce2d(fcrop, input[1])
             return loss

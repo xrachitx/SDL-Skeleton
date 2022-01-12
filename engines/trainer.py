@@ -49,7 +49,7 @@ class Trainer(object):
                 data, target = Variable(data), Variable(target)
 
 #                 loss = self.network(data, target,dil,self.batch_size)
-                loss = self.network(data, target)
+                loss = self.network(data, target,True)
                 try:
                     if np.isnan(float(loss.item())):
                         raise ValueError('loss is nan while training')

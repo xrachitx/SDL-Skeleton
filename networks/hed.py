@@ -55,7 +55,7 @@ class Network(nn.Module):
 
         d6 = self.fuse(torch.cat((d1, d2, d3, d4, d5), 1))
 
-        if self.training:
+        if input[2]:
             loss1 = bce2d(d1, input[1])
             loss2 = bce2d(d2, input[1])
             loss3 = bce2d(d3, input[1])

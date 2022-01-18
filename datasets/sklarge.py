@@ -5,6 +5,7 @@ from torchvision import transforms
 import skimage.io as io
 from torch.utils.data import Dataset,DataLoader
 import torch
+import cv2
 
 
 class TrainDataset(Dataset):
@@ -20,7 +21,7 @@ class TrainDataset(Dataset):
         inputName = os.path.join(self.rootDir, self.frame.iloc[idx, 0])
         targetName = os.path.join(self.rootDir, self.frame.iloc[idx, 1])
 
-        inputImage = io.imread(inputName)
+        inputImage = cv2.imread(inputName)
         if len(inputImage.shape) == 2:
             inputImage = inputImage[:, :, np.newaxis]
             inputImage = np.repeat(inputImage, 3, axis=-1)
@@ -34,7 +35,7 @@ class TrainDataset(Dataset):
             inputImage -= np.array([104.00699, 116.66877, 122.67892])
             inputImage = inputImage.transpose((2, 0, 1))
 
-        targetImage = io.imread(targetName)
+        targetImage = cv2.imread(targetName,cv2.IMREAD_GRAYSCALE)
         if len(targetImage.shape) == 3:
             targetImage = targetImage[:, :, 0]
         targetImage = targetImage > 0.0
@@ -107,7 +108,7 @@ class TestDataset(Dataset):
         inputName = os.path.join(self.rootDir, fname)
 #         print(inputName)
 
-        inputImage = io.imread(inputName)[:, :, ::-1]
+        inputImage = cv2.imread(inputName)[:, :, ::-1]
         inputImage = inputImage.astype(np.float32)
         inputImage -= np.array([104.00699, 116.66877, 122.67892])
         inputImage = inputImage.transpose((2, 0, 1))

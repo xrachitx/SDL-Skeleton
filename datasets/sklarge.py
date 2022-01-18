@@ -21,7 +21,6 @@ class TrainDataset(Dataset):
         inputName = os.path.join(self.rootDir, self.frame.iloc[idx, 0])
         targetName = os.path.join(self.rootDir, self.frame.iloc[idx, 1])
 
-#         inputImage = cv2.imread(inputName)
         inputImage = io.imread(inputName)
         if len(inputImage.shape) == 2:
             inputImage = inputImage[:, :, np.newaxis]
@@ -37,7 +36,6 @@ class TrainDataset(Dataset):
             inputImage = inputImage.transpose((2, 0, 1))
 
         targetImage = io.imread(targetName)
-#         targetImage = cv2.imread(targetName,cv2.IMREAD_GRAYSCALE)
         if len(targetImage.shape) == 3:
             targetImage = targetImage[:, :, 0]
         targetImage = targetImage > 0.0

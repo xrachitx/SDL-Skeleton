@@ -28,6 +28,8 @@ class Trainer(object):
         for _ in range(self.args.resume_iter // self.args.lr_step):
             self.adjustLR()
         self.showLR()
+        fp16=True
+        scaler = torch.cuda.amp.GradScaler(enabled=True if fp16 else False) 
         for step in tqdm(range(self.args.resume_iter, self.args.max_step)):
             losses = []
             for _ in range(self.args.iter_size):
@@ -49,7 +51,9 @@ class Trainer(object):
                 data, target = Variable(data), Variable(target)
 
 #                 loss = self.network(data, target,dil,self.batch_size)
-                loss = self.network(data, target,True)
+                with torch.cuda.amp.autocast(enabled=True if fp16 else False): # fp16 training
+                    loss = self.network(data, target,True)
+                
                 try:
                     if np.isnan(float(loss.item())):
                         raise ValueError('loss is nan while training')
@@ -60,8 +64,11 @@ class Trainer(object):
 
             bLoss = torch.mean(torch.cat(losses))
             self.optimizer.zero_grad()
-            bLoss.backward()
-            self.optimizer.step()
+            scaler.scale(bLoss).backward()
+#             bLoss.backward()
+#             self.optimizer.step()
+            scaler.step(self.optimizer)
+            scaler.update()
 
             # adjust hed learning rate
             if (step > 0) and (step % self.args.lr_step) == 0:

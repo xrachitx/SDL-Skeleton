@@ -22,6 +22,8 @@ class TrainDataset(Dataset):
         targetName = os.path.join(self.rootDir, self.frame.iloc[idx, 1])
 
         inputImage = io.imread(inputName)
+        if (inputImage.shape[-1] == 4 ):
+            inputImage = skimage.color.rgba2rgb(inputImage)
 #         inputImage = cv2.imread(inputName)
         if len(inputImage.shape) == 2:
             inputImage = inputImage[:, :, np.newaxis]

@@ -50,7 +50,7 @@ class Trainer(object):
                 data, target = next(dataiter)
               except StopIteration:
                 dataiter = iter(self.dataloader)
-              data, target = next(dataiter)
+                data, target = next(dataiter)
 
               data, target = data.cuda(self.args.gpu_id), target.cuda(self.args.gpu_id)
               data, target = Variable(data, requires_grad=False), Variable(target, requires_grad=False)
@@ -67,7 +67,7 @@ class Trainer(object):
                 scaler.scale(loss).backward()
                 lossAcc += loss.data[0]
                 lossFuse += fuse_loss.data[0]
-                except:
+              except:
                   print("avoiding")
             scaler.step(self.optimizer)
             scaler.update()

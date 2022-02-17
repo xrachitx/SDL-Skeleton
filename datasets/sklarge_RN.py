@@ -7,6 +7,7 @@ from torch.utils.data import DataLoader
 from torch.utils.data import Dataset
 import torch
 import cv2
+import skimage
 
 
 class TrainDataset(Dataset):

@@ -109,7 +109,7 @@ class Network(nn.Module):
         self.up4 = lambda x: F.interpolate(x, scale_factor=4, mode='bilinear', align_corners=False)
         self.up8 = lambda x: F.interpolate(x, scale_factor=8, mode='bilinear', align_corners=False)
 
-    def forward(self, input0, input1):
+    def forward(self, input0, input1,train):
         size = input0.size()[2:4]
         conv1, conv2, conv3, conv4, conv5 = self.network(input0)
         dsn1 = self.dsn1(conv1)
@@ -202,7 +202,7 @@ class Network(nn.Module):
             d_fuse = self.crop(d_fuse, (0, 0) + p2.size()[2:4]) + p2
         d_fuse = self.fuse_cell(d_fuse)
         
-        if False:
+        if train:
 
             s = self.classifier2(self.classifier1(d_fuse))
             out_fuse = self.crop(s, (34, 34) + size)

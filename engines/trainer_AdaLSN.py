@@ -51,16 +51,21 @@ class Trainer(object):
 
                 data, target = data.cuda(self.args.gpu_id), target.cuda(self.args.gpu_id)
                 data, target = Variable(data, requires_grad=False), Variable(target, requires_grad=False)
-
-                loss, fuse_loss = self.network(data, target,True)
+                
+                with torch.cuda.amp.autocast(enabled=True if fp16 else False): # fp16 training
+                  loss, fuse_loss = self.network(data, target,True)
+                  
                 if np.isnan(float(loss.data[0])):
                     raise ValueError('loss is nan while training')
+                
                 loss /= self.args.iter_size
-                loss.backward()
+#                 loss.backward()
+                scaler.scale(loss).backward()
                 lossAcc += loss.data[0]
                 lossFuse += fuse_loss.data[0]
-            
-            self.optimizer.step()
+            scaler.step(self.optimizer)
+            scaler.update()
+#             self.optimizer.step()
             self.optimizer.zero_grad()
             
             # adjust hed learning rate

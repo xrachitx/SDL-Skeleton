@@ -37,7 +37,7 @@ class Trainer(object):
         lossFuse = 0.0
         self.network.eval()  # if backbone has BN layers, freeze them
         dataiter = iter(self.dataloader)
-        fp16=True
+        fp16=False
         scaler = torch.cuda.amp.GradScaler(enabled=True if fp16 else False) 
         for _ in range(self.args.resume_iter // self.args.lr_step):
             self.adjustLR()

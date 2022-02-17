@@ -24,6 +24,8 @@ class TrainDataset(Dataset):
 #         print(inputName, targetName)
 
         inputImage = io.imread(inputName)
+        if (inputImage.shape[-1] == 4 ):
+            inputImage = skimage.color.rgba2rgb(inputImage)
         if len(inputImage.shape) == 2:
             inputImage = inputImage[:, :, np.newaxis]
             inputImage = np.repeat(inputImage, 3, axis=-1)

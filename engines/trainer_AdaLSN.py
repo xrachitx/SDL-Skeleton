@@ -42,6 +42,7 @@ class Trainer(object):
         for _ in range(self.args.resume_iter // self.args.lr_step):
             self.adjustLR()
         self.optimizer.zero_grad()
+#         loss = 0
         for step in tqdm(range(self.args.resume_iter, self.args.max_step)):
             
             for _ in range(self.args.iter_size):
@@ -57,14 +58,17 @@ class Trainer(object):
                 with torch.cuda.amp.autocast(enabled=True if fp16 else False): # fp16 training
                   loss, fuse_loss = self.network(data, target,True)
                   
-                if np.isnan(float(loss.data[0])):
-                    raise ValueError('loss is nan while training')
+                try:  
+                  if np.isnan(float(loss.data[0])):
+                      raise ValueError('loss is nan while training')
                 
-                loss /= self.args.iter_size
-#                 loss.backward()
-                scaler.scale(loss).backward()
-                lossAcc += loss.data[0]
-                lossFuse += fuse_loss.data[0]
+                  loss /= self.args.iter_size
+  #                 loss.backward()
+                  scaler.scale(loss).backward()
+                  lossAcc += loss.data[0]
+                  lossFuse += fuse_loss.data[0]
+                 except:
+                     print("avoiding")
             scaler.step(self.optimizer)
             scaler.update()
 #             self.optimizer.step()

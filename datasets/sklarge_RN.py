@@ -22,6 +22,7 @@ class TrainDataset(Dataset):
     def __getitem__(self, idx):
         inputName = os.path.join(self.rootDir, self.frame.iloc[idx, 0])
         targetName = os.path.join(self.rootDir, self.frame.iloc[idx, 1])
+        print(inputName)
 #         print(inputName, targetName)
 
         inputImage = io.imread(inputName)
